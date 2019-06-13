@@ -12,7 +12,7 @@ The analysis draws names from two sources within the Social Security Administrat
 
 ## Dependencies
 
-All dependencies are listed in [`env.yaml`](env.yaml). You can install them manually using your preferred package manager(s), or use [`conda`](https://docs.conda.io/projects/conda/en/latest/index.html).
+All dependencies are listed in [`env.yaml`](config/env.yaml). You can install them manually using your preferred package manager(s), or use [`conda`](https://docs.conda.io/projects/conda/en/latest/index.html).
 
 ### Conda
 
@@ -26,7 +26,7 @@ bash Miniconda3-latest-MacOSX-x86_64.sh
 
 Create an environment called `predict-age` with the dependencies we need:
 ```
-conda env create -f env.yaml
+conda env create -f config/env.yaml
 ```
 Or give the environment whatever name you want using the flag `--name` or `-n`.
 
