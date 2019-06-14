@@ -14,7 +14,7 @@ rule download:
     output:
         temp("data/raw/names.zip")
     benchmark:
-        'results/benchmarks/download.tsv'
+        'logfiles/benchmarks/download.tsv'
     shell:
         "curl -Lo {output} https://www.ssa.gov/oact/babynames/names.zip"
 
@@ -25,7 +25,7 @@ rule unzip:
         data=expand("data/raw/yob{year}.txt", year=range(start, end+1)),
         pdf="data/raw/NationalReadMe.pdf"
     benchmark:
-        'results/benchmarks/unzip.tsv'
+        'logfiles/benchmarks/unzip.tsv'
     shell:
         "unzip -u -d data/raw/ {input}"
 
@@ -36,7 +36,7 @@ rule cat_files:
     output:
         "data/processed/all_names_alldata-{use_all_data}.csv"
     benchmark:
-        "results/benchmarks/cat_files_alldata-{use_all_data}.tsv"
+        "logfiles/benchmarks/cat_files_alldata-{use_all_data}.tsv"
     params:
         use_all_data="{use_all_data}"
     script:
@@ -49,7 +49,7 @@ rule interpolate:
     output:
         "data/processed/alive_2016_annual.csv"
     benchmark:
-        "results/benchmarks/interpolate_mortality.tsv"
+        "logfiles/benchmarks/interpolate_mortality.tsv"
     script:
         "{input.R}"
 
@@ -61,7 +61,7 @@ rule get_name_counts:
     output:
         "data/processed/total_and_living_name_counts_alldata-{use_all_data}.csv"
     benchmark:
-        "results/benchmarks/get_name_counts_alldata-{use_all_data}.tsv"
+        "logfiles/benchmarks/get_name_counts_alldata-{use_all_data}.tsv"
     script:
         '{input.R}'
 
@@ -74,7 +74,7 @@ rule render_report:
     output:
         'family_report_alldata-{use_all_data}.html'
     benchmark:
-        'results/benchmarks/render_report_alldata-{use_all_data}.tsv'
+        'logfiles/benchmarks/render_report_alldata-{use_all_data}.tsv'
     script:
         "{input.render}"
 
