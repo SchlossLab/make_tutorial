@@ -4,7 +4,7 @@
 #PBS -l procs=1,pmem=4GB,walltime=10:00    ## resource reservation  max walltime = 672 hours
 #PBS -l qos=flux        ## quality of service DO NOT CHANGE THIS
 ##PBS -M        ## send email notifications to umich email listed
-#PBS -m abe                ## when to send email a=abort b=job begin e=job end
+#PBS -m a                ## when to send email a=abort b=job begin e=job end
 #PBS -j oe                 ## send output and error information to the email listed above
 #PBS -V                 ## IMPORTANT always use this. send environment setup to node job will be run on
 #PBS -o logfiles/pbs/  ## write output/error logfile(s) to this dir
