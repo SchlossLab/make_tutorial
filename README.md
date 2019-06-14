@@ -1,8 +1,6 @@
 # Snakemake Tutorial for Make Users
 
-This repository was forked from a tutorial on how to use [GNU Make](https://www.gnu.org/software/make/). It provides a parallel implementation in [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html), a Python-based workflow management system.
-
-The [tutorial](http://www.riffomonas.org/tutorials/make/#1) is part of [Pat](https://github.com/pschloss)'s Reproducible Research in Microbial Informatics series. If you aren't interested in the motivation from a microbiology perspective, you can skip ahead to around [slide 15](http://www.riffomonas.org/tutorials/make/#22). The tutorial focuses on replicating an analysis performed by FiveThirtyEight to [predict someone's age using their name](http://fivethirtyeight.com/features/how-to-tell-someones-age-when-all-you-know-is-her-name/).
+This repository was forked from the [repository](https://github.com/riffomonas/make_tutorial) that accompanies Pat's [tutorial on GNU Make](http://www.riffomonas.org/tutorials/make/#1). The original tutorial focuses on replicating an analysis performed by FiveThirtyEight to [predict someone's age using their name](http://fivethirtyeight.com/features/how-to-tell-someones-age-when-all-you-know-is-her-name/). This project provides a parallel implementation in [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html), a Python-based workflow management system.
 
 ## Datasets
 
