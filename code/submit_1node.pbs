@@ -21,4 +21,4 @@ echo $PBS_O_WORKDIR
 
 #  Put your job commands after this line. Load all required modules before submitting this script.
 source activate predict-age
-snakemake --configfile config/config_alldata.yaml --forceall
+time snakemake --configfile config/config_alldata.yaml --forceall
