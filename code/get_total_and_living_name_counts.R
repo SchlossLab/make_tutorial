@@ -5,9 +5,20 @@
 #
 # Probably want to come back and use dplyr to simplify processing.
 
-living_data <- read.csv("data/processed/alive_2016_annual.csv", header=T, stringsAsFactors=FALSE, row.names=1)
+if (exists("snakemake")) {
+    living_data_file <- snakemake@input[["living"]]
+	names_file <- snakemake@input[["names"]]
+	output_file <- snakemake@output[[1]]
+} else {
+	living_data_file <- "data/processed/alive_2016_annual.csv"
+    names_file <- "data/processed/all_names.csv"
+	output_file <- "data/processed/total_and_living_name_counts.csv"
+}
 
-name_counts <- read.csv("data/processed/all_names.csv", header=T, stringsAsFactors=FALSE)
+
+living_data <- read.csv(living_data_file, header=T, stringsAsFactors=FALSE, row.names=1)
+
+name_counts <- read.csv(names_file, header=T, stringsAsFactors=FALSE)
 
 name_counts$alive <- NA
 name_counts[name_counts$gender=="M", "alive"] <-
@@ -17,4 +28,4 @@ name_counts[name_counts$gender=="F", "alive"] <-
 
 name_alive <- name_counts[!is.na(name_counts$alive),]
 
-write.table(file="data/processed/total_and_living_name_counts.csv", name_alive)
+write.table(file=output_file, name_alive)

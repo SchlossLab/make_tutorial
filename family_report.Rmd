@@ -3,11 +3,14 @@ title: "Schloss family name report"
 author: "Pat Schloss"
 date: "`r Sys.Date()`"
 output: html_document
+params:
+    csv_file: "data/processed/total_and_living_name_counts.csv"
+    plot_code: "code/plot_functions.R"
 ---
 
 ```{r preliminaries, echo=F, eval=T}
-data <- read.table(file="data/processed/total_and_living_name_counts.csv")
-source('code/plot_functions.R')
+data <- read.table(file=params$csv_file)
+source(params$plot_code)
 ```
 
 These are number of people born (black line) and still alive (colored line) for each person's name. The year that represents the median for people still alive with that name is represented by a thicker line.
@@ -32,4 +35,7 @@ age <- c(15, 13, 12, 9, 6, 4, 3, 1)
 distro_plot(n_vector, g_vector, age, data)
 ```
 
-**Note:** If you want to use other names, you will need to comment out lines 23 and 24 from `concatenate_files.R`. This will cause the scripts to run a bit slower.
+**Note:** If you want to use other names, you will need to change either:
+- The default value of `use_all_data` on line 14 in `concatenate_files.R` if you're using `make`.
+- The value of `use_all_data` in the configuration file (`config/config_default.yaml`) if you're using `snakemake`.
+This will cause the scripts to run a bit slower.

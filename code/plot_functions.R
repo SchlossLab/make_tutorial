@@ -1,3 +1,4 @@
+
 time_plot <- function(n, g, data){
 	name_data <- subset(data, name == n & gender == g)
 

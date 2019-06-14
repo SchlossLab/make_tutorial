@@ -10,8 +10,16 @@ if(!"zoo" %in% installed.packages()[,"Package"]){
 }
 library("zoo") # NA values
 
+if (exists("snakemake")) {
+    mortality_file <- snakemake@input[[1]]
+	output_file <- snakemake@output[[1]]
+} else {
+    mortality_file <- "data/raw/alive_2016_per_100k.csv"
+	output_file <- "data/processed/alive_2016_annual.csv"
+}
+
 # get SS mortality data
-mortality_decade <- read.csv(file="data/raw/alive_2016_per_100k.csv", header=T, stringsAsFactors=FALSE)
+mortality_decade <- read.csv(file=mortality_file, header=T, stringsAsFactors=FALSE)
 
 # create data frame that will have data for each year.
 mortality_annual <- data.frame(year=min(mortality_decade$year):2016,male=NA, female=NA)
@@ -30,4 +38,4 @@ mortality_annual$female <- na.approx(mortality_annual$female)
 mortality_annual$male_rate <- mortality_annual$male / 1e5
 mortality_annual$female_rate <- mortality_annual$female / 1e5
 
-write.table(file="data/processed/alive_2016_annual.csv", mortality_annual, row.names=FALSE, sep=',', quote=F)
+write.table(file=output_file, mortality_annual, row.names=FALSE, sep=',', quote=F)
