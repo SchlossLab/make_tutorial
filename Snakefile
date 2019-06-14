@@ -3,20 +3,12 @@ configfile: "config/config_default.yaml"
 start = config['start']
 end = config['end']
 use_all_data = config['use_all_data']
+#use_all_data_values = {"T", "F"}
 
-rule render_report:
+rule target:
     input:
-        csv=f"data/processed/total_and_living_name_counts_alldata-{use_all_data}.csv",
-        rmd='family_report.Rmd',
-        plotr="code/plot_functions.R"
-    output:
         f'family_report_alldata-{use_all_data}.html'
-    benchmark:
-        f'results/benchmarks/render_report_alldata-{use_all_data}.tsv'
-    shell:
-        """
-        R -e "library(rmarkdown); render('{input.rmd}', output_file='{output}', params = list(csv_file='{input.csv}', plot_code='{input.plotr}'))"
-        """
+        #expand('family_report_alldata-{use_all_data}.html', use_all_data=use_all_data_values)
 
 rule download:
     output:
@@ -24,32 +16,33 @@ rule download:
     benchmark:
         'results/benchmarks/download.tsv'
     shell:
-        "curl -Lo data/raw/names.zip https://www.ssa.gov/oact/babynames/names.zip"
+        "curl -Lo {output} https://www.ssa.gov/oact/babynames/names.zip"
 
 rule unzip:
     input:
-        "data/raw/names.zip"
+        rules.download.output
     output:
-        expand("data/raw/yob{year}.txt", year=range(start, end+1))
+        data=expand("data/raw/yob{year}.txt", year=range(start, end+1)),
+        pdf="data/raw/NationalReadMe.pdf"
     benchmark:
         'results/benchmarks/unzip.tsv'
     shell:
-        "unzip -u -d data/raw/ data/raw/names.zip"
+        "unzip -u -d data/raw/ {input}"
 
-rule concatenate_files:
+rule cat_files:
     input:
-        data=expand("data/raw/yob{year}.txt", year=range(start, end+1)),
+        data=rules.unzip.output.data,
         R="code/concatenate_files.R"
     output:
         "data/processed/all_names_alldata-{use_all_data}.csv"
     benchmark:
-        "results/benchmarks/concatenate_files_alldata-{use_all_data}.tsv"
+        "results/benchmarks/cat_files_alldata-{use_all_data}.tsv"
     params:
-        use_all_data=use_all_data
+        use_all_data="{use_all_data}"
     script:
         '{input.R}'
 
-rule interpolate_mortality:
+rule interpolate:
     input:
         csv="data/raw/alive_2016_per_100k.csv",
         R='code/interpolate_mortality.R'
@@ -62,8 +55,8 @@ rule interpolate_mortality:
 
 rule get_name_counts:
     input:
-        living="data/processed/alive_2016_annual.csv",
-        names="data/processed/all_names_alldata-{use_all_data}.csv",
+        living=rules.interpolate.output,
+        names=rules.cat_files.output,
         R='code/get_total_and_living_name_counts.R'
     output:
         "data/processed/total_and_living_name_counts_alldata-{use_all_data}.csv"
@@ -72,8 +65,20 @@ rule get_name_counts:
     script:
         '{input.R}'
 
-rule clean:
+rule render_report:
+    input:
+        csv=rules.get_name_counts.output,
+        rmd='family_report.Rmd',
+        plotr="code/plot_functions.R"
+    output:
+        'family_report_alldata-{use_all_data}.html'
+    benchmark:
+        'results/benchmarks/render_report_alldata-{use_all_data}.tsv'
     shell:
         """
-        rm -rf data/raw/*.txt data/raw/*.pdf data/raw/*.zip data/processed/*.csv *.html family_report_*files/
+        R -e "library(rmarkdown); render('{input.rmd}', output_file='{output}', params = list(csv_file='{input.csv}', plot_code='{input.plotr}'))"
         """
+
+rule clean:
+    shell:
+        "rm -rf data/raw/*.txt data/raw/*.pdf data/raw/*.zip data/processed/*.csv *.html family_report_*files/"
