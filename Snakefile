@@ -4,7 +4,7 @@ start = config['start']
 end = config['end']
 use_all_data = config['use_all_data']
 
-rule render_report:  # TODO: can we pass these variables as input to the Rmarkdown file?
+rule render_report:
     input:
         csv="data/processed/total_and_living_name_counts.csv",
         rmd='family_report.Rmd',
