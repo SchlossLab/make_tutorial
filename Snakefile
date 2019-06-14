@@ -69,15 +69,14 @@ rule render_report:
     input:
         csv=rules.get_name_counts.output,
         rmd='family_report.Rmd',
-        plotr="code/plot_functions.R"
+        plotr="code/plot_functions.R",
+        render="code/render_report.R"
     output:
         'family_report_alldata-{use_all_data}.html'
     benchmark:
         'results/benchmarks/render_report_alldata-{use_all_data}.tsv'
-    shell:
-        """
-        R -e "library(rmarkdown); render('{input.rmd}', output_file='{output}', params = list(csv_file='{input.csv}', plot_code='{input.plotr}'))"
-        """
+    script:
+        "{input.render}"
 
 rule clean:
     shell:
