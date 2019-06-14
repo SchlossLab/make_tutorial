@@ -5,7 +5,7 @@
     "procs": 1,
     "pmem": "4GB",
     "walltime": "10:00",
-    "email": "",
+    "email": "your@email",
     "mailon": "a",
     "jobout": "oe",
     "outdir": "logfiles/pbs/"
