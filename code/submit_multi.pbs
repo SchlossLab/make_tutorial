@@ -21,4 +21,4 @@ echo $PBS_O_WORKDIR
 
 #  Put your job commands after this line. Load all required modules before submitting this script.
 source activate predict-age
-time snakemake --profile pbs-torque --latency-wait 10 --configfile config/config_alldata.yaml --forceall
+time snakemake --forceall --profile pbs-torque --latency-wait 10
