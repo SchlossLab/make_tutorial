@@ -30,7 +30,7 @@ rule unzip:
     input:
         "data/raw/names.zip"
     output:
-        expand("data/raw/yob{year}.txt", year=range(start, end))
+        expand("data/raw/yob{year}.txt", year=range(start, end+1))
     benchmark:
         'results/benchmarks/unzip.tsv'
     shell:
@@ -38,7 +38,7 @@ rule unzip:
 
 rule concatenate_files:
     input:
-        data=expand("data/raw/yob{year}.txt", year=range(start, end)),
+        data=expand("data/raw/yob{year}.txt", year=range(start, end+1)),
         R="code/concatenate_files.R"
     output:
         "data/processed/all_names.csv"
