@@ -13,7 +13,7 @@ if (exists("snakemake")) {
 	output_file <- "data/processed/all_names.csv"
     use_all_data <- FALSE
 }
-print("use_all_data:", use_all_data)
+print(paste0("use_all_data: ", use_all_data))
 make_year_data_frame <- function(file_name=x){
 
 	file <- read.csv(file=file_name, header=F, stringsAsFactors=FALSE)
