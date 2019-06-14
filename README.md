@@ -10,7 +10,7 @@ The analysis draws names from two sources within the Social Security Administrat
 
 ## Dependencies
 
-All dependencies are listed in [`env.yaml`](config/env.yaml). You can install them manually using your preferred package manager(s), or use [`conda`](https://docs.conda.io/projects/conda/en/latest/index.html).
+All dependencies are listed in [`config/env.yaml`](config/env.yaml). You can install them manually using your preferred package manager(s), or use [`conda`](https://docs.conda.io/projects/conda/en/latest/index.html).
 
 ### Conda
 
@@ -26,7 +26,7 @@ Create an environment called `predict-age` with the dependencies we need:
 ```
 conda env create -f config/env.yaml
 ```
-Or give the environment whatever name you want using the flag `--name` or `-n`.
+Or give the environment whatever name you want using the flag `--name` or `-n`. (If you give it a different name, be sure to modify the environment name in [`pbs-torque/pbs-jobscript.sh`](pbs-torque/pbs-jobscript.sh).)
 
 Activate the environment before running any code:
 ```
