@@ -6,16 +6,16 @@ use_all_data = config['use_all_data']
 
 rule render_report:
     input:
-        csv="data/processed/total_and_living_name_counts.csv",
+        csv=f"data/processed/total_and_living_name_counts_alldata-{use_all_data}.csv",
         rmd='family_report.Rmd',
         plotr="code/plot_functions.R"
     output:
-        'family_report.html'
+        f'family_report_alldata-{use_all_data}.html'
     benchmark:
-        'results/benchmarks/render_report.tsv'
+        f'results/benchmarks/render_report_alldata-{use_all_data}.tsv'
     shell:
         """
-        R -e "library(rmarkdown); render('{input.rmd}', params = list(csv_file='{input.csv}', plot_code='{input.plotr}'))"
+        R -e "library(rmarkdown); render('{input.rmd}', output_file='{output}', params = list(csv_file='{input.csv}', plot_code='{input.plotr}'))"
         """
 
 rule download:
@@ -41,9 +41,9 @@ rule concatenate_files:
         data=expand("data/raw/yob{year}.txt", year=range(start, end+1)),
         R="code/concatenate_files.R"
     output:
-        "data/processed/all_names.csv"
+        "data/processed/all_names_alldata-{use_all_data}.csv"
     benchmark:
-        "results/benchmarks/concatenate_files.tsv"
+        "results/benchmarks/concatenate_files_alldata-{use_all_data}.tsv"
     params:
         use_all_data=use_all_data
     script:
@@ -63,22 +63,17 @@ rule interpolate_mortality:
 rule get_name_counts:
     input:
         living="data/processed/alive_2016_annual.csv",
-        names="data/processed/all_names.csv",
+        names="data/processed/all_names_alldata-{use_all_data}.csv",
         R='code/get_total_and_living_name_counts.R'
     output:
-        "data/processed/total_and_living_name_counts.csv"
+        "data/processed/total_and_living_name_counts_alldata-{use_all_data}.csv"
     benchmark:
-        "results/benchmarks/get_name_counts.tsv"
+        "results/benchmarks/get_name_counts_alldata-{use_all_data}.tsv"
     script:
         '{input.R}'
 
 rule clean:
     shell:
         """
-        rm -f data/raw/*.txt
-        rm -f data/raw/*.pdf
-        rm -f data/raw/*.zip
-        rm -f data/processed/*.csv
-        rm -f family_report.html
-        rm -rf family_report_files/
+        rm -rf data/raw/*.txt data/raw/*.pdf data/raw/*.zip data/processed/*.csv *.html family_report_*files/
         """
