@@ -13,7 +13,7 @@ if (exists("snakemake")) {
 	output_file <- "data/processed/all_names.csv"
     use_all_data <- FALSE
 }
-
+print("use_all_data:", use_all_data)
 make_year_data_frame <- function(file_name=x){
 
 	file <- read.csv(file=file_name, header=F, stringsAsFactors=FALSE)
@@ -28,6 +28,7 @@ merged_names <- do.call(rbind, name_data_frames)
 colnames(merged_names) <- c("name", "gender", "frequency", "year")
 
 if (!use_all_data) {
+    print("Not using all data")
     kids <- c("Sarah", "Mary", "Patrick", "Joseph", "John", "Ruth", "Jacob", "Peter", "Martha")
     merged_names <- merged_names[merged_names$name %in% kids,]
 }
