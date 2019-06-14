@@ -36,6 +36,7 @@ distro_plot(n_vector, g_vector, age, data)
 ```
 
 **Note:** If you want to use other names, you will need to change either:
+
 - The default value of `use_all_data` on line 14 in `concatenate_files.R` if you're using `make`.
 - The value of `use_all_data` in the configuration file (`config/config_default.yaml`) if you're using `snakemake`.
 This will cause the scripts to run a bit slower.
