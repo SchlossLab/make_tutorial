@@ -1,6 +1,6 @@
 data/
 .snakemake/
-results/benchmarks/
+logfiles/benchmarks/
 *.RData
 *.Rout
 *.html
