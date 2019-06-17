@@ -12,26 +12,18 @@ rule target:
 
 rule download:
     output:
-        temp("data/raw/names.zip")
-    benchmark:
-        'logfiles/benchmarks/download.tsv'
+        zip=temp(f"{raw}/names.zip"),
+        data=expand("{raw}/yob{year}.txt", raw=raw, year=years),
+        pdf=f"{raw}/NationalReadMe.pdf"
     shell:
-        "curl -Lo {output} https://www.ssa.gov/oact/babynames/names.zip"
-
-rule unzip:
-    input:
-        rules.download.output
-    output:
-        data=expand("data/raw/yob{year}.txt", year=range(start, end+1)),
-        pdf="data/raw/NationalReadMe.pdf"
-    benchmark:
-        'logfiles/benchmarks/unzip.tsv'
-    shell:
-        "unzip -u -d data/raw/ {input}"
+        """
+        curl -Lo {output.zip} https://www.ssa.gov/oact/babynames/names.zip
+        unzip -u -d {raw} {output.zip}
+        """
 
 rule cat_files:
     input:
-        data=rules.unzip.output.data,
+        data=rules.download.output.data,
         R="code/concatenate_files.R"
     output:
         "data/processed/all_names_alldata-{use_all_data}.csv"
