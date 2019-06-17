@@ -22,12 +22,13 @@ checkpoint download:
 
 def get_year_filenames(wildcards):
     dir = checkpoints.download.get(**wildcards).output.dir
-    years = glob_wildcards(f"{dir}/yob{{year}}.txt").year
+    years, = glob_wildcards(f"{dir}/yob{{year}}.txt")
     return expand("{dir}/yob{year}.txt", dir=dir, year=years)
 
 rule cat_files:
     input:
         data=get_year_filenames,
+        dir=rules.download.output.dir,
         R="code/concatenate_files.R"
     output:
         f"{processed}/all_names_alldata-{{use_all_data}}.csv"
@@ -80,4 +81,4 @@ rule render_report:
 
 rule clean:
     shell:
-        "rm -rf {raw}/years/ {raw}/*.zip {processed}/*.csv *.html family_report_*files/"
+        "rm -rf {raw}/years/ {processed}/*.csv *.html"
