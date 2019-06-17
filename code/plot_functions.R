@@ -1,5 +1,5 @@
 
-time_plot <- function(n, g, data){
+time_plot <- function(n, g, data, start_year, end_year) {
 	name_data <- subset(data, name == n & gender == g)
 
 	median_year <- median(rep(name_data$year, round(name_data$alive)))
@@ -7,7 +7,7 @@ time_plot <- function(n, g, data){
 	clr <- ifelse(g=="M", "dodgerblue", "pink")
 
 	par(mar=c(4,5,0.5,0.5))
-	plot(NA, xlab="", ylab="", xlim=c(1900,2020), ylim=c(0, max(name_data$frequency)), axes=F)
+	plot(NA, xlab="", ylab="", xlim=c(start_year, end_year), ylim=c(0, max(name_data$frequency)), axes=F)
 
 	points(name_data$frequency~name_data$year, type="l", col="black", lwd=2)
 	points(name_data$alive~name_data$year, type="h", col=clr, lwd=2)
@@ -26,7 +26,7 @@ time_plot <- function(n, g, data){
 }
 
 
-distro_plot <- function(n_vector, g_vector, age_vector, data){
+distro_plot <- function(n_vector, g_vector, age_vector, data) {
 
 	thick <- 0.15
 

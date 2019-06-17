@@ -6,6 +6,8 @@ output: html_document
 params:
     csv_file: "data/processed/total_and_living_name_counts.csv"
     plot_code: "code/plot_functions.R"
+    start_year: 1900
+    end_year: 2015
 ---
 
 ```{r preliminaries, echo=F, eval=T}
@@ -16,14 +18,14 @@ source(params$plot_code)
 These are number of people born (black line) and still alive (colored line) for each person's name. The year that represents the median for people still alive with that name is represented by a thicker line.
 
 ```{r time_plots, echo=F}
-time_plot("Patrick", "M", data)
-time_plot("Joseph", "M", data)
-time_plot("John", "M", data)
-time_plot("Jacob", "M", data)
-time_plot("Peter", "M", data)
-time_plot("Ruth", "F", data)
-time_plot("Mary", "F", data)
-time_plot("Martha", "F", data)
+time_plot("Patrick", "M", data, params$start_year, params$end_year)
+time_plot("Joseph", "M", data, params$start_year, params$end_year)
+time_plot("John", "M", data, params$start_year, params$end_year)
+time_plot("Jacob", "M", data, params$start_year, params$end_year)
+time_plot("Peter", "M", data, params$start_year, params$end_year)
+time_plot("Ruth", "F", data, params$start_year, params$end_year)
+time_plot("Mary", "F", data, params$start_year, params$end_year)
+time_plot("Martha", "F", data, params$start_year, params$end_year)
 ```
 
 Here is the 50% confidence interval for each Schloss kid indicated by the rectangle along with the median predicted age (black dot) and their actual age (red dot):

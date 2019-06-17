@@ -1,9 +1,12 @@
 configfile: "config/config_default.yaml"
 
-start = config['start']
-end = config['end']
+raw = config['raw_dir']
+processed = config['processed_dir']
+start_year = config['start_year']
+end_year = config['end_year']
 use_all_data = config['use_all_data']
 #use_all_data_values = {"T", "F"}
+years = range(start_year, end_year+1)
 
 rule target:
     input:
@@ -26,7 +29,7 @@ rule cat_files:
         data=rules.download.output.data,
         R="code/concatenate_files.R"
     output:
-        "data/processed/all_names_alldata-{use_all_data}.csv"
+        f"{processed}/all_names_alldata-{{use_all_data}}.csv"
     benchmark:
         "logfiles/benchmarks/cat_files_alldata-{use_all_data}.tsv"
     params:
@@ -36,10 +39,10 @@ rule cat_files:
 
 rule interpolate:
     input:
-        csv="data/raw/alive_2016_per_100k.csv",
+        csv=f"{raw}/alive_2016_per_100k.csv",
         R='code/interpolate_mortality.R'
     output:
-        "data/processed/alive_2016_annual.csv"
+        f"{processed}/alive_2016_annual.csv"
     benchmark:
         "logfiles/benchmarks/interpolate_mortality.tsv"
     script:
@@ -51,7 +54,7 @@ rule get_name_counts:
         names=rules.cat_files.output,
         R='code/get_total_and_living_name_counts.R'
     output:
-        "data/processed/total_and_living_name_counts_alldata-{use_all_data}.csv"
+        f"{processed}/total_and_living_name_counts_alldata-{{use_all_data}}.csv"
     benchmark:
         "logfiles/benchmarks/get_name_counts_alldata-{use_all_data}.tsv"
     script:
@@ -65,6 +68,9 @@ rule render_report:
         render="code/render_report.R"
     output:
         'family_report_alldata-{use_all_data}.html'
+    params:
+        start_year=start_year,
+        end_year=end_year
     benchmark:
         'logfiles/benchmarks/render_report_alldata-{use_all_data}.tsv'
     script:
@@ -72,4 +78,4 @@ rule render_report:
 
 rule clean:
     shell:
-        "rm -rf data/raw/*.txt data/raw/*.pdf data/raw/*.zip data/processed/*.csv *.html family_report_*files/"
+        "rm -rf {raw}/*.txt {raw}/*.pdf {raw}/*.zip {processed}/*.csv *.html family_report_*files/"

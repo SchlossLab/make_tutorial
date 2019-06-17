@@ -1,3 +1,5 @@
-start: 1880
-end: 2018
+raw_dir: data/raw
+processed_dir: data/processed
+start_year: 1900
+end_year: 2018
 use_all_data: T

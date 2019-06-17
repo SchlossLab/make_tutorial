@@ -1,3 +1,5 @@
-start: 1900
-end: 2015
+raw_dir: data/raw
+processed_dir: data/processed
+start_year: 1900
+end_year: 2015
 use_all_data: F
