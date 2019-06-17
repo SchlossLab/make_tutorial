@@ -5,13 +5,12 @@ processed = config['processed_dir']
 start_year = config['start_year']
 end_year = config['end_year']
 use_all_data = config['use_all_data']
-#use_all_data_values = {"T", "F"}
+
 years = range(start_year, end_year+1)
 
 rule target:
     input:
         f'family_report_alldata-{use_all_data}.html'
-        #expand('family_report_alldata-{use_all_data}.html', use_all_data=use_all_data_values)
 
 rule download:
     output:
