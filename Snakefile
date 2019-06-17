@@ -8,18 +8,14 @@ years = range(start, end+1)
 
 rule download:
     output:
-        temp(f"{raw}/names.zip")
-    shell:
-        "curl -Lo {output} https://www.ssa.gov/oact/babynames/names.zip"
-
-rule unzip:
-    input:
-        f"{raw}/names.zip"
-    output:
+        zip=f"{raw}/names.zip",
         data=expand("{raw}/yob{year}.txt", raw=raw, year=years),
         pdf=f"{raw}/NationalReadMe.pdf"
     shell:
-        "unzip -u -d {raw} {input}"
+        """
+        curl -Lo {output.zip} https://www.ssa.gov/oact/babynames/names.zip
+        unzip -u -d {raw} {output.zip}
+        """
 
 rule cat_files:
     input:
@@ -64,4 +60,4 @@ rule render_report:
 
 rule clean:
     shell:
-        "rm -rf {raw}/*.txt {raw}/*.pdf {raw}/*.zip {processed}/*.csv *.html family_report_*files/"
+        "rm -rf {raw}/*.txt {raw}/*.pdf {raw}/*.zip {processed}/*.csv *.html family_report_files/"
