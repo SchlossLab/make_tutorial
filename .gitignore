@@ -1,5 +1,6 @@
-data/
 .snakemake/
+data/
+logfiles/
 *.RData
 *.Rout
 *.html
