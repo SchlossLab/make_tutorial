@@ -99,3 +99,13 @@ Snakemake throws an error if you try to overwrite a protected file.
 You can only delete a protected file with `rm -f`.
 
 ## Running on Flux
+
+Two methods:
+- Use only one node. `code/submit_1node.pbs`
+- Use a profile to automatically submit multiple jobs. `code/submit_multi.pbs`
+
+## Cluster config
+
+Edit `config/cluster.json`.
+Set default parameters -- email, walltime, processors, etc.
+Override the default configuration on a rule-by-rule basis.
