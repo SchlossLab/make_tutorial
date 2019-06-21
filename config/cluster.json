@@ -1,12 +1,21 @@
-"__default__": {
-    "account": "pschloss_fluxod",
-    "queue": "fluxod",
-    "jobname": "{rule}.{wildcards}",
-    "procs": 1,
-    "pmem": "4GB",
-    "walltime": "10:00",
-    "email": "your@email",
-    "mailon": "a",
-    "jobout": "oe",
-    "outdir": "logfiles/pbs/"
+{
+    "__default__":
+    {
+        "account": "pschloss_fluxod",
+        "queue": "fluxod",
+        "jobname": "{rule}.{wildcards}",
+        "procs": 1,
+        "pmem": "4GB",
+        "walltime": "5:00",
+        "email": "your@email",
+        "mailon": "a",
+        "jobout": "oe",
+        "outdir": "logfiles/pbs/"
+    },
+    
+    "get_name_counts":
+    {
+        "pmem": "8GB",
+        "walltime": "10:00"
+    },
 }
