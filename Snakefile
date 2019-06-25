@@ -69,8 +69,7 @@ rule render_report:
         plotr="code/plot_functions.R",
         render="code/render_report.R"
     output:
-        'family_report_alldata-{use_all_data}.html',
-        temp(directory('family_report_alldata-{use_all_data}_files/'))
+        'family_report_alldata-{use_all_data}.html'
     params:
         start_year=start_year,
         end_year=end_year
@@ -81,4 +80,4 @@ rule render_report:
 
 rule clean:
     shell:
-        "rm -rf {raw}/years/ {processed}/*.csv *.html"
+        "rm -rf {raw}/years/ {processed}/*.csv *.html family_report_*files/"
